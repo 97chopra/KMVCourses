@@ -1,0 +1,24 @@
+ITC101,Intro to Programming,IT,15,5,Core
+ITC102,Technology in Society,IT,15,5,Core
+ITC103,Teamwork in Tech,IT,15,5,Core
+ITC104,Computational Mathematics,IT,15,5,Core
+ITC105,IT Project Coordination,IT,15,5,Core
+ITC106,Relational Database,IT,15,5,Core
+ITC801,Advanced Software Engineering,IT,15,8,Core
+ITC802,Cloud Computing Architecture,IT,15,8,Core
+ITC803,CyberSecurity Management,IT,15,8,Core
+ITC804,Data Mining and Machine Learning,IT,15,8,Core
+ITC901,Doctoral Seminar in Computing,IT,15,9,Core
+ITC902,Advanced in AI and Ethics,IT,15,9,Core
+ENG101,Intro to Engineering,Engineering,15,5,Core
+ENG102,Engineering Mathematics I,Engineering,15,5,Core
+ENG103,Introduction to Mechanics,Engineering,15,5,Core
+ENG104,Engineering Materials,Engineering,15,5,Core
+ENG105,Computer-Aided Design,Engineering,15,5,Core
+ENG106,Physics for Engineering,Engineering,15,5,Core
+ENG801,Advanced Materials Engineering,Engineering,15,8,Core
+ENG802,Computational Fluid Dynamics,Engineering,15,8,Core
+ENG803,Advanced Control System,Engineering,15,8,Core
+ENG804,Engineering Project Management,Engineering,15,8,Core
+ENG901,Doctoral Seminar in Engineering,Engineering,15,9,Core
+ENG902,Emerging Engineering Systems,Engineering,15,9,Core
