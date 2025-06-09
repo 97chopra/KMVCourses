@@ -16,6 +16,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import kmvcourses.dao.ChapterDAO;
+import kmvcourses.dao.ChapterDAOImpl;
+import kmvcourses.model.Chapter;
 public class CourseManagementPanel extends JPanel
 {
     private JFrame parentFrame;
@@ -26,10 +29,17 @@ public class CourseManagementPanel extends JPanel
     private JButton btnAdd, btnEdit, btnDelete, btnMainMenu;
     private JTextField txtCourseId, txtCourseName, txtDepartment, txtCredits, txtLevel, txtType;
     
+    // chapter Management components
+    private JButton btnManageChapters;
+    private ChapterDAO chapterDAO;
+    
+    
+    
     public CourseManagementPanel(JFrame parentFrame, String adminId) {
         this.parentFrame = parentFrame;
         this.adminId = adminId;
         this.courseDAO = new CoursesDAO();
+        this.chapterDAO = new ChapterDAOImpl();
         initializeComponents();
         setupLayout();
         addEventListeners();
@@ -95,6 +105,8 @@ public class CourseManagementPanel extends JPanel
         return panel;
     }
     
+    
+    
     private void addFormField(JPanel panel, String label, JTextField field, 
                              GridBagConstraints gbc, int row) {
         gbc.gridx = 0; gbc.gridy = row;
@@ -109,11 +121,13 @@ public class CourseManagementPanel extends JPanel
         btnAdd = new JButton("Add Course");
         btnEdit = new JButton("Edit Course");
         btnDelete = new JButton("Delete Course");
+        btnManageChapters = new JButton("Manage Chapters");
         btnMainMenu = new JButton("← Main Menu");
         
         panel.add(btnAdd);
         panel.add(btnEdit);
         panel.add(btnDelete);
+        panel.add(btnManageChapters);
         panel.add(btnMainMenu);
         
         return panel;
@@ -138,7 +152,108 @@ public class CourseManagementPanel extends JPanel
                 loadSelectedCourse();
             }
         });
+        
+        // NEW: Chapter management listener
+        btnManageChapters.addActionListener(e -> {
+            int selectedRow = courseTable.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Please select a course first", 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            String courseId = (String) tableModel.getValueAt(selectedRow, 0);
+            new ChapterManagerDialog(courseId).setVisible(true);
+        });
     }
+    
+    
+    private class ChapterManagerDialog extends JDialog {
+        private final String courseId;
+        private JTable chaptersTable;
+        private DefaultTableModel chaptersModel;
+
+        public ChapterManagerDialog(String courseId) {
+            this.courseId = courseId;
+            initializeDialog();
+            loadChapters();
+        }
+
+        private void initializeDialog() {
+            setTitle("Manage Chapters - Course: " + courseId);
+            setSize(600, 400);
+            setLocationRelativeTo(CourseManagementPanel.this);
+            setModal(true);
+
+            // Table setup
+            String[] columns = {"Chapter ID", "Title", "Order"};
+            chaptersModel = new DefaultTableModel(columns, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            chaptersTable = new JTable(chaptersModel);
+            
+            // Buttons
+            JButton btnAddChapter = new JButton("Add Chapter");
+            btnAddChapter.addActionListener(e -> addChapter());
+
+            add(new JScrollPane(chaptersTable), BorderLayout.CENTER);
+            add(btnAddChapter, BorderLayout.SOUTH);
+        }
+
+        private void loadChapters() {
+            chaptersModel.setRowCount(0);
+            chapterDAO.getChaptersByCourse(courseId).forEach(chapter -> 
+                chaptersModel.addRow(new Object[]{
+                    chapter.getChapterId(),
+                    chapter.getChapterTitle(),
+                    chapter.getChapterOrder()
+                })
+            );
+        }
+
+        private void addChapter() 
+        {
+            // Create input fields
+    JTextField titleField = new JTextField();
+    JSpinner orderSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+
+    JPanel inputPanel = new JPanel(new GridLayout(2, 2));
+    inputPanel.add(new JLabel("Chapter Title:"));
+    inputPanel.add(titleField);
+    inputPanel.add(new JLabel("Order:"));
+    inputPanel.add(orderSpinner);
+
+    int result = JOptionPane.showConfirmDialog(
+        this, inputPanel, "Add New Chapter", JOptionPane.OK_CANCEL_OPTION
+    );
+
+    if (result == JOptionPane.OK_OPTION) {
+        String title = titleField.getText().trim();
+        int order = (Integer) orderSpinner.getValue();
+
+        if (title.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Chapter title cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Chapter chapter = new Chapter();
+        chapter.setCourseId(courseId); // courseId is a field in your dialog
+        chapter.setChapterTitle(title);
+        chapter.setChapterOrder(order);
+
+        boolean success = chapterDAO.addChapter(chapter);
+        if (success) {
+            loadChapters(); // refresh the table to show the new chapter
+            JOptionPane.showMessageDialog(this, "Chapter added successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add chapter.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+        }
+    }
+
     
     public void refreshData() {
         tableModel.setRowCount(0);

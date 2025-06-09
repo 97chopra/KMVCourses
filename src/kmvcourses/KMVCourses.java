@@ -26,8 +26,8 @@ public class KMVCourses {
        // TableManager.createCoursesTable();
         //TableManager.createCoursesTable();
        // TableManager.createStudentsTable();
-       TableManager.createChaptersTable();
-       TableManager.createLessonsTable();
+       //TableManager.createChaptersTable();
+      // TableManager.createLessonsTable();
        
        
         

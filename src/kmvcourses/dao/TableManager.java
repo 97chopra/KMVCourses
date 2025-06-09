@@ -232,17 +232,17 @@ public class TableManager
                 }
             }
         }
-        System.out.println("✅ " + insertedCount + " course records inserted successfully.");
+        System.out.println(" " + insertedCount + " course records inserted successfully.");
 
     } catch (SQLException e) {
-        System.err.println("❌ Database error: " + e.getMessage());
+        System.err.println(" Database error: " + e.getMessage());
     }
     }
     public static void createChaptersTable() {
     try (Connection conn = DriverManager.getConnection(DB_URL)) {
         String sql = """
             CREATE TABLE COURSE_CHAPTERS (
-                chapter_id VARCHAR(10) PRIMARY KEY,
+                chapter_id VARCHAR(50) PRIMARY KEY,
                 course_id VARCHAR(10),
                 chapter_title VARCHAR(100),
                 chapter_order INTEGER,
