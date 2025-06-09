@@ -9,21 +9,36 @@ package kmvcourses;
  * @author aarti
  */
 
+import kmvcourses.admin.AdminLogin;
 import kmvcourses.dao.TableManager;
-import kmvcourses.dao.CourseFileLoader;
 import kmvcourses.dao.CourseViewer;
+
+
 public class KMVCourses {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-       
-        TableManager.createCoursesTable();  // ? Calls the table creation
+        // Create the required tables (ADMINS, COURSES, STUDENTS, etc.)
+        //TableManager.createAdminsNewTable();
+        //TableManager.createStudentsTable();
+       // TableManager.createCoursesTable();
+        //TableManager.createCoursesTable();
+       // TableManager.createStudentsTable();
         
-        CourseFileLoader.loadCoursesFromFile("Courses.txt");
-        CourseViewer.viewCourses(); 
+
+
+        // Load course data from a text file (optional if you have one)
+        // CourseFileLoader.loadCoursesFromFile("Courses.txt");
+
+        // View the loaded courses (optional)
+        // CourseViewer.viewCourses();
+
+        
+        new kmvcourses.admin.AdminLogin();
+        
+        
     }
     
 }
