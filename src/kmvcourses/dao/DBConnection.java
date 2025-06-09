@@ -13,30 +13,30 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class DBConnection 
 {
-    private Connection conn;
+    private static Connection conn;
 
-    public DBConnection() {
-        establishConnection();
+    static {
+        establishConnection(); // Called once when class is loaded
     }
 
-    public Connection getConnection() {
+    //  Returns the shared connection
+    public static Connection getConnection() {
         return conn;
     }
 
-    private void establishConnection() {
+    //  Establish Derby Embedded connection
+    private static void establishConnection() {
         try {
-            // Embedded driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-
-            // Path to your embedded DB (create=true will create if not exists)
-            String url = "jdbc:derby:C:/Users/aarti/Desktop/CourseDB;create=true";
-
+            String url = "jdbc:derby:C:/Users/aarti/OneDrive/Desktop/CourseDB;create=true";
             conn = DriverManager.getConnection(url);
-            System.out.println("✅ Embedded DB connection established.");
+            System.out.println(" Embedded DB connection established.");
         } catch (ClassNotFoundException e) {
-            System.err.println("❌ JDBC Driver not found: " + e.getMessage());
+            System.err.println(" JDBC Driver not found: " + e.getMessage());
         } catch (SQLException e) {
-            System.err.println("❌ SQL Error: " + e.getMessage());
+            System.err.println(" SQL Error: " + e.getMessage());
         }
     }
+
+    
 }
