@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+
 public class TableManager 
 {
     // Embedded Derby DB path (matches your AdminLogin and DBConnection setup)
@@ -235,9 +237,61 @@ public class TableManager
     } catch (SQLException e) {
         System.err.println("❌ Database error: " + e.getMessage());
     }
+    }
+    public static void createChaptersTable() {
+    try (Connection conn = DriverManager.getConnection(DB_URL)) {
+        String sql = """
+            CREATE TABLE COURSE_CHAPTERS (
+                chapter_id VARCHAR(10) PRIMARY KEY,
+                course_id VARCHAR(10),
+                chapter_title VARCHAR(100),
+                chapter_order INTEGER,
+                FOREIGN KEY (course_id) REFERENCES COURSES(course_id)
+            )
+            """;
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
+            System.out.println("COURSE_CHAPTERS table created successfully.");
+        }
+    } catch (SQLException e) {
+        if (e.getSQLState().equals("X0Y32")) {
+            System.out.println("COURSE_CHAPTERS table already exists.");
+        } else {
+            System.out.println("Error creating COURSE_CHAPTERS table: " + e.getMessage());
+        }
+    }
+}
+
+public static void createLessonsTable() {
+    try (Connection conn = DriverManager.getConnection(DB_URL)) {
+        String sql = """
+            CREATE TABLE COURSE_LESSONS (
+                lesson_id VARCHAR(10) PRIMARY KEY,
+                chapter_id VARCHAR(10),
+                lesson_title VARCHAR(100),
+                lesson_content CLOB,
+                lesson_order INTEGER,
+                FOREIGN KEY (chapter_id) REFERENCES COURSE_CHAPTERS(chapter_id)
+            )
+            """;
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
+            System.out.println("COURSE_LESSONS table created successfully.");
+        }
+    } catch (SQLException e) {
+        if (e.getSQLState().equals("X0Y32")) {
+            System.out.println("COURSE_LESSONS table already exists.");
+        } else {
+            System.out.println("Error creating COURSE_LESSONS table: " + e.getMessage());
+        }
+    }
 }
 
 }
+
+
 
 
 
