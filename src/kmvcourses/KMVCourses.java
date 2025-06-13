@@ -39,7 +39,8 @@ public class KMVCourses {
 
         // View the loaded courses (optional)
         // CourseViewer.viewCourses();
-
+       // TableManager.createAttendenceTable();
+        //  TableManager.createGradesTable();
         
         new kmvcourses.admin.AdminLogin();
         
