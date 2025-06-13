@@ -9,6 +9,8 @@ import java.util.List;
 import java.sql.*;
 import kmvcourses.model.Courses;
 import kmvcourses.model.Lecturer;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  *
@@ -17,6 +19,7 @@ import kmvcourses.model.Lecturer;
 public class LecturerDAOImpl implements LecturerDAO
 {
     private static final String DB_URL = "jdbc:derby:C:/Users/aarti/OneDrive/Desktop/CourseDB;create=true";
+    private static final Logger LOGGER = Logger.getLogger(LecturerDAOImpl.class.getName());
 
     public List<Lecturer> getAllLecturers() {
         List<Lecturer> lecturers = new ArrayList<>();
@@ -64,11 +67,18 @@ public class LecturerDAOImpl implements LecturerDAO
             stmt.setString(1, lecturer.getlecturerId());
             stmt.setString(2, lecturer.getName());
             stmt.setString(3, lecturer.getEmail());
-            return stmt.executeUpdate() > 0;
+            int updated = stmt.executeUpdate();
+            if(updated > 0)
+            {
+               LOGGER.log(Level.INFO, "Lecturer added successfully: {0}", lecturer.getlecturerId());
+            return true; 
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error adding lecturer: " + lecturer.getlecturerId(), e);
             return false;
         }
+        
+        return false;
     }
 
     public boolean updateLecturer(Lecturer lecturer) {
@@ -78,11 +88,17 @@ public class LecturerDAOImpl implements LecturerDAO
             stmt.setString(1, lecturer.getName());
             stmt.setString(2, lecturer.getEmail());
             stmt.setString(3, lecturer.getlecturerId());
-            return stmt.executeUpdate() > 0;
+            int updated = stmt.executeUpdate();
+            if(updated > 0)
+            {
+              LOGGER.log(Level.INFO, "Lecturer updated successfully: {0}", lecturer.getlecturerId());
+            return true;  
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+           LOGGER.log(Level.SEVERE, "Error updating lecturer: " + lecturer.getlecturerId(), e); 
             return false;
         }
+        return false;
     }
 
     public boolean deleteLecturer(String lecturerId) {
@@ -90,11 +106,18 @@ public class LecturerDAOImpl implements LecturerDAO
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, lecturerId);
-            return stmt.executeUpdate() > 0;
+            int updated = stmt.executeUpdate();
+            if(updated > 0)
+            {
+              LOGGER.log(Level.INFO, "Lecturer deleted successfully: {0}", lecturerId);
+            return true;  
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+             LOGGER.log(Level.SEVERE, "Error deleting lecturer: " + lecturerId, e);
             return false;
         }
+        
+        return false;
     }
 
     public boolean assignToCourse(String courseId, String lecturerId) {
@@ -103,11 +126,18 @@ public class LecturerDAOImpl implements LecturerDAO
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, courseId);
             stmt.setString(2, lecturerId);
-            return stmt.executeUpdate() > 0;
+            int updated = stmt.executeUpdate();
+            if(updated > 0)
+            {
+                LOGGER.log(Level.INFO, "Lecturer {0} assigned to course {1}", new Object[]{lecturerId, courseId});
+            return true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error assigning lecturer " + lecturerId + " to course " + courseId, e);
             return false;
         }
+        
+        return false;
     }
 
     public boolean unassignFromCourse(String courseId, String lecturerId) {
@@ -116,11 +146,18 @@ public class LecturerDAOImpl implements LecturerDAO
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, courseId);
             stmt.setString(2, lecturerId);
-            return stmt.executeUpdate() > 0;
+            int updated = stmt.executeUpdate();
+            if(updated > 0)
+            {
+              
+        LOGGER.log(Level.INFO, "Lecturer {0} unassigned from course {1}", new Object[]{lecturerId, courseId});
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+           LOGGER.log(Level.SEVERE, "Error unassigning lecturer " + lecturerId + " from course " + courseId, e);
             return false;
         }
+        
+        return false;
     }
     
     public List<Courses> getAssignedCourses(String lecturerId)

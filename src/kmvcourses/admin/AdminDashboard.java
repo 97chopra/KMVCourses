@@ -163,7 +163,10 @@ public class AdminDashboard extends JFrame implements ActionListener {
     
     // CRITICAL: Allow users to return to main menu anytime (requirement)
     public void showMainMenu() {
-        cardLayout.show(mainPanel, "MENU");
+        CardLayout cl = (CardLayout) mainPanel.getLayout();
+    cl.show(mainPanel, "MENU");
+    mainPanel.revalidate(); // Refresh the panel with CardLayout
+    mainPanel.repaint();    // Ensure visual update
     }
     
     private void handleLogout() {

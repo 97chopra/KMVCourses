@@ -20,6 +20,9 @@ import kmvcourses.dao.StudentDAOImpl;
 import kmvcourses.model.Student;
 import java.util.List;
 import java.util.ArrayList;
+import kmvcourses.dao.AttendanceDAO;
+import kmvcourses.dao.AttendanceDAOImpl;
+import kmvcourses.model.Attendance;
 
 
 public class StudentManagementPanel extends JPanel {
@@ -28,14 +31,17 @@ public class StudentManagementPanel extends JPanel {
     private JTable studentTable;
     private DefaultTableModel tableModel;
     private StudentDAO  studentDAO;
+    private AttendanceDAO attendanceDAO = new AttendanceDAOImpl();
     
     // Search componnets
-    private JTextField searchField;
-    private JButton  searchButton;
+   // private JTextField searchField;
+    //private JButton  searchButton;
     private JButton btnAdd;
-    private JButton btnEdit;
+    
     private JButton btnDelete;
     private JButton btnMainMenu;
+    private JButton btnViewAttendance;
+   // private JButton btnViewStudents;
     
     
     public StudentManagementPanel(JFrame parentFrame, String adminId) {
@@ -61,12 +67,12 @@ public class StudentManagementPanel extends JPanel {
 
         // Search Panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        searchField = new JTextField(20);
-        searchButton = new JButton("Search");
-        searchButton.addActionListener(e -> searchStudents());
+       // searchField = new JTextField(20);
+      //  searchButton = new JButton("Search");
+      //  searchButton.addActionListener(e -> searchStudents());
         searchPanel.add(new JLabel("Search:"));
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
+       // searchPanel.add(searchField);
+      //  searchPanel.add(searchButton);
         add(searchPanel, BorderLayout.BEFORE_FIRST_LINE);
 
         // Student Table
@@ -76,28 +82,30 @@ public class StudentManagementPanel extends JPanel {
         };
         studentTable = new JTable(tableModel);
         add(new JScrollPane(studentTable), BorderLayout.CENTER);
+       // btnViewStudents = new JButton("View Students");
         btnAdd = new JButton("Add Student");
-        btnEdit = new JButton("Edit Student");
         btnDelete = new JButton("Delete Student");
-        btnMainMenu = new JButton("<- Main Menu");
+        btnMainMenu = new JButton("Main Menu");
+        btnViewAttendance = new JButton("View Attendance");
         // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
        
         btnAdd.addActionListener(e -> showAddDialog());
-        btnEdit.addActionListener(e -> showEditDialog());
+        
         btnDelete.addActionListener(e -> deletStudent());
+        btnViewAttendance.addActionListener(e -> showAttendanceDialog());
         btnMainMenu.addActionListener(e -> {
             if (parentFrame instanceof AdminDashboard) {
                 ((AdminDashboard) parentFrame).showMainMenu();
             }
         });
-        
+       // btnViewStudents.addActionListener(e -> loadStudents());
         // Add action listeners for these buttons as needed...
         buttonPanel.add(btnMainMenu);
+       // buttonPanel.add(btnViewStudents);
         buttonPanel.add(btnAdd);
-        buttonPanel.add(btnEdit);
         buttonPanel.add(btnDelete);
-
+        buttonPanel.add(btnViewAttendance);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
@@ -114,21 +122,21 @@ public class StudentManagementPanel extends JPanel {
         }
     }
 
-    private void searchStudents() 
-    {
-        String keyword = searchField.getText().trim();
-        List<Student> results = studentDAO.searchStudents(keyword);
-        tableModel.setRowCount(0);
-        for (Student s : results) {
-            tableModel.addRow(new Object[]{
-                s.getStudentId(), s.getFirstName(), s.getLastName(), s.getPassword()
-            });
-        }
-    }
+   // private void searchStudents() 
+   // {
+      //  String keyword = searchField.getText().trim();
+     //   List<Student> results = studentDAO.searchStudents(keyword);
+      //  tableModel.setRowCount(0);
+      //  for (Student s : results) {
+       //     tableModel.addRow(new Object[]{
+      //          s.getStudentId(), s.getFirstName(), s.getLastName(), s.getPassword()
+      //      });
+      //  }
+   // }
     
     private void showAddDialog()
     {
-       JTextField idField = new JTextField();
+        JTextField idField = new JTextField();
         JTextField firstNameField = new JTextField();
         JTextField lastNameField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
@@ -236,6 +244,34 @@ public class StudentManagementPanel extends JPanel {
             }
         } 
     }
+    
+    private void showAttendanceDialog() {
+    int selectedRow = studentTable.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a student to view attendance!");
+        return;
+    }
+    String studentId = (String) tableModel.getValueAt(selectedRow, 0);
+    List<Attendance> records = attendanceDAO.getAttendanceByStudent(studentId);
+
+    if (records.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No attendance records found for this student.");
+        return;
+    }
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("Date\tCourse\tStatus\n");
+    for (Attendance a : records) {
+        sb.append(a.getDate()).append("\t")
+          .append(a.getCourseId()).append("\t")
+          .append(a.getStatus()).append("\n");
+    }
+    JTextArea area = new JTextArea(sb.toString());
+    area.setEditable(false);
+    JScrollPane scroll = new JScrollPane(area);
+    scroll.setPreferredSize(new Dimension(400, 200));
+    JOptionPane.showMessageDialog(this, scroll, "Attendance for Student " + studentId, JOptionPane.INFORMATION_MESSAGE);
+}
 
     public void refreshData() 
     {

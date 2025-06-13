@@ -366,6 +366,57 @@ public static void createLecturersTable() {
             System.err.println("Database error: " + e.getMessage());
         }
     }
+    
+    public static void createAttendenceTable()
+    {
+        String createSql = "CREATE TABLE ATTENDANCE (" +
+        "attendance_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
+        "student_id VARCHAR(20), " +
+        "course_id VARCHAR(20), " +
+        "date DATE, " +
+        "status VARCHAR(10))";
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+         Statement stmt = conn.createStatement()) {
+        try {
+            stmt.executeUpdate(createSql);
+            System.out.println("ATTENDANCE table created.");
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("X0Y32")) {
+                System.out.println("ATTENDANCE table already exists.");
+            } else {
+                throw e;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+        
+    }
+    
+    public static void createGradesTable() {
+    String sql = "CREATE TABLE GRADES (" +
+                 "grade_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
+                 "student_id VARCHAR(10), " +
+                 "course_id VARCHAR(10), " +
+                 "grade DOUBLE, " +
+                 "CONSTRAINT fk_student FOREIGN KEY (student_id) REFERENCES STUDENTS(student_id), " +
+                 "CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES COURSES(course_id), " +
+                 "UNIQUE (student_id, course_id)" +
+                 ")";
+    try (Connection conn = DriverManager.getConnection(DB_URL);
+         Statement stmt = conn.createStatement()) {
+        stmt.executeUpdate(sql);
+        System.out.println("GRADES table created.");
+    } catch (SQLException e) {
+        if ("X0Y32".equals(e.getSQLState())) {
+            System.out.println("GRADES table already exists.");
+        } else {
+            e.printStackTrace();
+        }
+    }
+}
+
 
 }
 

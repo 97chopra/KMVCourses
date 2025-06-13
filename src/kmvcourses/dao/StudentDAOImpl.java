@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class StudentDAOImpl implements StudentDAO 
 {
     private static final String DB_URL = "jdbc:derby:C:/Users/aarti/OneDrive/Desktop/CourseDB;create=true";
+    private static final Logger LOGGER = Logger.getLogger(StudentDAOImpl.class.getName());
     
     @Override
     public List<Student> getAllStudents() 
@@ -81,11 +82,17 @@ public class StudentDAOImpl implements StudentDAO
             stmt.setString(2, student.getFirstName());
             stmt.setString(3, student.getLastName());
             stmt.setString(4, student.getPassword());
-            return stmt.executeUpdate() > 0;
+            int updated = stmt.executeUpdate();
+            if(updated > 0)
+            {
+                LOGGER.log(Level.INFO, "Student add successfully: {0}", student.getStudentId());
+                return true;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error adding student: " + student.getStudentId(), e);
             return false;
         }
+        return false;
     }
 
     @Override
@@ -112,11 +119,18 @@ public class StudentDAOImpl implements StudentDAO
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, studentId);
-            return stmt.executeUpdate() > 0;
+            int updated = stmt.executeUpdate();
+            if(updated > 0)
+            {
+               LOGGER.log(Level.INFO, "Student deleted successfully: {0}", studentId);
+                return true; 
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+           LOGGER.log(Level.SEVERE, "Error deleting student: " + studentId, e); 
             return false;
         }
+        
+        return false;
     }
 
     @Override
