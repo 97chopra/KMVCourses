@@ -5,11 +5,17 @@
         <group>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/DBConnection.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/KMVCourses.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/ChapterDAOImpl.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/admin/AdminDashboard.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/TestDB.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/CourseManagementPanel.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/admin/AdminLogin.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/DropAdminTable.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/TableManager.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Chapter.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Lesson.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/TestDB.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/CoursesDAO.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/DropAdminTable.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/ChapterDAO.java</file>
         </group>
     </open-files>
 </project-private>

@@ -293,28 +293,110 @@ public class CourseManagementPanel extends JPanel
     
     private void editCourse() {
         int selectedRow = courseTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a course to edit.", 
-                                        "Error", JOptionPane.ERROR_MESSAGE);
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a course to edit.",
+                                      "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String courseId = (String) tableModel.getValueAt(selectedRow, 0);
+
+    // Show dialog with two options
+    JDialog dialog = new JDialog(parentFrame, "Update Course: " + courseId, true);
+    dialog.setLayout(new GridLayout(2, 1, 10, 10));
+
+    JButton btnAddChapter = new JButton("Add New Chapter");
+    JButton btnDeleteChapter = new JButton("Delete Existing Chapter");
+
+    btnAddChapter.addActionListener(e -> {
+        dialog.dispose();
+        showAddChapterDialog(courseId);
+    });
+
+    btnDeleteChapter.addActionListener(e -> {
+        dialog.dispose();
+        showDeleteChapterDialog(courseId);
+    });
+
+    dialog.add(btnAddChapter);
+    dialog.add(btnDeleteChapter);
+
+    dialog.setSize(300, 150);
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+    }
+    
+    private void showAddChapterDialog(String courseId) {
+    JTextField titleField = new JTextField();
+    JSpinner orderSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+
+    JPanel inputPanel = new JPanel(new GridLayout(2, 2));
+    inputPanel.add(new JLabel("Chapter Title:"));
+    inputPanel.add(titleField);
+    inputPanel.add(new JLabel("Order:"));
+    inputPanel.add(orderSpinner);
+
+    int result = JOptionPane.showConfirmDialog(
+        this, inputPanel, "Add New Chapter", JOptionPane.OK_CANCEL_OPTION
+    );
+
+    if (result == JOptionPane.OK_OPTION) {
+        String title = titleField.getText().trim();
+        int order = (Integer) orderSpinner.getValue();
+
+        if (title.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Chapter title cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        if (validateForm()) {
-            try {
-                Courses course = createCourseFromForm();
-                if (courseDAO.updateCourse(course)) {
-                    JOptionPane.showMessageDialog(this, "Course updated successfully!");
-                    refreshData();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Failed to update course.", 
-                                                "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error updating course: " + e.getMessage(), 
-                                            "Error", JOptionPane.ERROR_MESSAGE);
-            }
+
+        Chapter chapter = new Chapter();
+        chapter.setCourseId(courseId);
+        chapter.setChapterTitle(title);
+        chapter.setChapterOrder(order);
+
+        boolean success = chapterDAO.addChapter(chapter);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Chapter added successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add chapter.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+}
+
+private void showDeleteChapterDialog(String courseId) {
+    java.util.List<Chapter> chapters = chapterDAO.getChaptersByCourse(courseId);
+    if (chapters.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No chapters to delete.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+
+    String[] chapterTitles = chapters.stream()
+        .map(Chapter::getChapterTitle)
+        .toArray(String[]::new);
+
+    String selected = (String) JOptionPane.showInputDialog(
+        this,
+        "Select chapter to delete:",
+        "Delete Chapter",
+        JOptionPane.PLAIN_MESSAGE,
+        null,
+        chapterTitles,
+        null
+    );
+
+    if (selected != null) {
+        Chapter toDelete = chapters.stream()
+            .filter(c -> c.getChapterTitle().equals(selected))
+            .findFirst()
+            .orElse(null);
+
+        if (toDelete != null && chapterDAO.deleteChapter(toDelete.getChapterId())) {
+            JOptionPane.showMessageDialog(this, "Chapter deleted successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to delete chapter.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
     
     private void deleteCourse() {
         int selectedRow = courseTable.getSelectedRow();

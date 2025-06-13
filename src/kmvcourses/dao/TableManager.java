@@ -145,16 +145,16 @@ public class TableManager
                     insertedCount++;
                 } catch (SQLException e) {
                     if (e.getSQLState().equals("23505")) {
-                        System.out.println("⚠️ Duplicate student ID detected - skipping.");
+                        System.out.println("️ Duplicate student ID detected - skipping.");
                     } else {
                         throw e;
                     }
                 }
             }
-            System.out.println("✅ " + insertedCount + " student records inserted successfully.");
+            System.out.println("" + insertedCount + " student records inserted successfully.");
 
         } catch (SQLException e) {
-            System.err.println("❌ Database error: " + e.getMessage());
+            System.err.println(" Database error: " + e.getMessage());
         }
         
         // Shutdown Derby cleanly
@@ -288,6 +288,84 @@ public static void createLessonsTable() {
         }
     }
 }
+
+public static void createLecturersTable() {
+        String createSql = "CREATE TABLE LECTURERS (" +
+            "lecturer_id VARCHAR(10) PRIMARY KEY, " +
+            "name VARCHAR(50) NOT NULL, " +
+            "email VARCHAR(100) UNIQUE)";
+
+        String[] insertSqls = {
+            "INSERT INTO LECTURERS VALUES ('KMV001', 'Dr. Sarah Johnson', 's.johnson@kmv.com')",
+            "INSERT INTO LECTURERS VALUES ('KMV002', 'Prof. Michael Chen', 'm.chen@kmv.com')",
+            "INSERT INTO LECTURERS VALUES ('KMV003', 'Dr. Emma Wilson', 'e.wilson@kmv.com')",
+            "INSERT INTO LECTURERS VALUES ('KMV004', 'Prof. David Smith', 'd.smith@kmv.com')",
+            "INSERT INTO LECTURERS VALUES ('KMV005', 'Dr. Lisa Kim', 'l.kim@kmv.com')"
+        };
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             Statement stmt = conn.createStatement()) {
+
+            // Create LECTURERS table
+            try {
+                stmt.executeUpdate(createSql);
+                System.out.println("LECTURERS table created.");
+            } catch (SQLException e) {
+                if (e.getSQLState().equals("X0Y32")) {
+                    System.out.println("LECTURERS table already exists.");
+                } else {
+                    throw e;
+                }
+            }
+
+            // Insert sample lecturers
+            int insertedCount = 0;
+            for (String insertSql : insertSqls) {
+                try {
+                    stmt.executeUpdate(insertSql);
+                    insertedCount++;
+                } catch (SQLException e) {
+                    if (e.getSQLState().equals("23505")) {
+                        System.out.println("⚠️ Duplicate lecturer ID detected - skipping.");
+                    } else {
+                        throw e;
+                    }
+                }
+            }
+            System.out.println("" + insertedCount + " lecturer records inserted successfully.");
+
+        } catch (SQLException e) {
+            System.err.println(" Database error: " + e.getMessage());
+        }
+    }
+
+    public static void createCourseLecturersTable() {
+        String createSql = "CREATE TABLE COURSE_LECTURERS (" +
+            "course_id VARCHAR(10), " +
+            "lecturer_id VARCHAR(10), " +
+            "PRIMARY KEY (course_id, lecturer_id), " +
+            "FOREIGN KEY (course_id) REFERENCES COURSES(course_id), " +
+            "FOREIGN KEY (lecturer_id) REFERENCES LECTURERS(lecturer_id))";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             Statement stmt = conn.createStatement()) {
+
+            // Create COURSE_LECTURERS table
+            try {
+                stmt.executeUpdate(createSql);
+                System.out.println("COURSE_LECTURERS table created.");
+            } catch (SQLException e) {
+                if (e.getSQLState().equals("X0Y32")) {
+                    System.out.println("COURSE_LECTURERS table already exists.");
+                } else {
+                    throw e;
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        }
+    }
 
 }
 

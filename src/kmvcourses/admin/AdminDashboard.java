@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import kmvcourses.view.admin.CourseManagementPanel;
 import kmvcourses.view.admin.StudentManagementPanel;
 import kmvcourses.view.admin.ReportManagementPanel;
+import kmvcourses.view.admin.LecturerManagementPanel;
 
 /**
  *
@@ -28,6 +29,7 @@ public class AdminDashboard extends JFrame implements ActionListener {
     // Menu buttons
     private JButton btnStudentManagement;
     private JButton btnCourseManagement;
+    private JButton btnLecturerManagement;
     private JButton btnReports;
     private JButton btnLogout;
     private JButton btnMainMenu;
@@ -35,7 +37,9 @@ public class AdminDashboard extends JFrame implements ActionListener {
     // Panel instances
     private CourseManagementPanel coursePanel;
     private StudentManagementPanel studentPanel;
-    private ReportManagementPanel reportPanel; 
+    private LecturerManagementPanel LecturerPanel;
+    private ReportManagementPanel reportPanel;
+    
     
     public AdminDashboard(String adminId) {
         this.adminId = adminId;
@@ -46,6 +50,8 @@ public class AdminDashboard extends JFrame implements ActionListener {
         setVisible(true);
 
     }
+
+    
     
     private void initializeComponents() {
         setTitle("KMV Courses - Admin Dashboard");
@@ -62,7 +68,10 @@ public class AdminDashboard extends JFrame implements ActionListener {
         // Create management panels
         coursePanel = new CourseManagementPanel(this, adminId);
         studentPanel = new StudentManagementPanel(this, adminId);
-        reportPanel = new ReportManagementPanel(this, adminId); 
+        LecturerPanel = new LecturerManagementPanel();
+        reportPanel = new ReportManagementPanel(this, adminId);
+        
+        
          
     }
     
@@ -83,11 +92,13 @@ public class AdminDashboard extends JFrame implements ActionListener {
         
         btnStudentManagement = createMenuButton(" Student Management");
         btnCourseManagement = createMenuButton(" Course Management");
+        btnLecturerManagement = createMenuButton("Lecturer Management");
         btnReports = createMenuButton(" Reports & Analytics");
         btnLogout = createMenuButton(" Logout");
         
         buttonsPanel.add(btnStudentManagement);
         buttonsPanel.add(btnCourseManagement);
+        buttonsPanel.add(btnLecturerManagement);
         buttonsPanel.add(btnReports);
         buttonsPanel.add(btnLogout);
         
@@ -108,7 +119,8 @@ public class AdminDashboard extends JFrame implements ActionListener {
     private void setupLayout() {
         mainPanel.add(studentPanel, "STUDENTS");
         mainPanel.add(coursePanel, "COURSES");
-       mainPanel.add(reportPanel, "REPORTS");
+        mainPanel.add(LecturerPanel,"LECTURERS");
+        mainPanel.add(reportPanel, "REPORTS");
         
         add(mainPanel);
         cardLayout.show(mainPanel, "MENU");
@@ -138,7 +150,10 @@ public class AdminDashboard extends JFrame implements ActionListener {
         } else if (source == btnCourseManagement) {
             coursePanel.refreshData();
             cardLayout.show(mainPanel, "COURSES");
-        } else if (source == btnReports) {
+        }else if(source==btnLecturerManagement)
+        {
+            cardLayout.show(mainPanel, "LECTURERS");
+        }else if (source == btnReports) {
             reportPanel.refreshData();
             cardLayout.show(mainPanel, "REPORTS");
         } else if (source == btnLogout) {
