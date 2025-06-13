@@ -66,7 +66,8 @@ public class MainInterface extends JFrame {
         lecturerButton.setMaximumSize(new Dimension(180, 50));
         lecturerButton.setFocusPainted(false);
         lecturerButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Lecturer portal coming soon!");
+            new kmvcourses.lecturer.LecturerLogin().setVisible(true);
+            this.dispose();
         });
 
         JButton exitButton = new JButton("Exit (X)");

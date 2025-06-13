@@ -16,4 +16,7 @@ import java.util.List;
 public interface AttendanceDAO 
 {
     List<Attendance> getAttendanceByStudent(String studentId);
+    boolean markAttendance(String studentId, String courseId, java.sql.Date date, String status);
+    String getGradeForStudent(String studentId, String courseId);
+    boolean setGradeForStudent(String studentId, String courseId, String grade);
 }

@@ -41,21 +41,24 @@ public class KMVCourses {
         // CourseViewer.viewCourses();
        // TableManager.createAttendenceTable();
         //  TableManager.createGradesTable();
-        
+      //  TableManager.addLecturerPasswordColumn();
+      //  TableManager.setLecturerPasswords();   
        // new kmvcourses.admin.AdminLogin();
+      // TableManager.createEnrollmentsTable();
+      
        // Set Nimbus Look and Feel before any GUI is shown
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+               if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (Exception e) {
+       } catch (Exception e) {
             // fallback: use default look and feel
         }
         
-        // Launch your main interface (this is critical!)
+        // Launch your main interface 
       javax.swing.SwingUtilities.invokeLater(() -> {
         new kmvcourses.view.admin.MainInterface().setVisible(true);
     });

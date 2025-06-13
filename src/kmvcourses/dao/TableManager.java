@@ -417,11 +417,56 @@ public static void createLecturersTable() {
     }
 }
 
-
+public static void addLecturerPasswordColumn() {
+    String sql = "ALTER TABLE LECTURERS ADD COLUMN PASSWORD VARCHAR(50)";
+    try (Connection conn = DriverManager.getConnection(DB_URL);
+         Statement stmt = conn.createStatement()) {
+        stmt.executeUpdate(sql);
+        System.out.println("Password column added to LECTURERS table.");
+    } catch (SQLException e) {
+        if ("X0Y32".equals(e.getSQLState())) {
+            System.out.println("Password column already exists in LECTURERS table.");
+        } else {
+            e.printStackTrace();
+        }
+    }
 }
 
+public static void setLecturerPasswords() {
+    try (Connection conn = DriverManager.getConnection(DB_URL);
+         Statement stmt = conn.createStatement()) {
+        stmt.executeUpdate("UPDATE LECTURERS SET PASSWORD = 'pass1' WHERE lecturer_id = 'KMV001'");
+        stmt.executeUpdate("UPDATE LECTURERS SET PASSWORD = 'pass2' WHERE lecturer_id = 'KMV002'");
+        stmt.executeUpdate("UPDATE LECTURERS SET PASSWORD = 'pass3' WHERE lecturer_id = 'KMV003'");
+        stmt.executeUpdate("UPDATE LECTURERS SET PASSWORD = 'pass4' WHERE lecturer_id = 'KMV004'");
+        stmt.executeUpdate("UPDATE LECTURERS SET PASSWORD = 'pass5' WHERE lecturer_id = 'KMV005'");
+        System.out.println("Lecturer passwords set.");
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+  }
+   public static void createEnrollmentsTable() {
+    String sql = "CREATE TABLE ENROLLMENTS (" +
+                 "enrollment_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                 "student_id VARCHAR(10) NOT NULL, " +
+                 "course_id VARCHAR(10) NOT NULL, " +
+                 "FOREIGN KEY (student_id) REFERENCES STUDENTS(student_id), " +
+                 "FOREIGN KEY (course_id) REFERENCES COURSES(course_id)" +
+                 ")";
+    try (Connection conn = DriverManager.getConnection(DB_URL);
+         Statement stmt = conn.createStatement()) {
+        stmt.executeUpdate(sql);
+        System.out.println("ENROLLMENTS table created successfully.");
+    } catch (SQLException e) {
+        if ("X0Y32".equals(e.getSQLState())) {
+            System.out.println("ENROLLMENTS table already exists.");
+        } else {
+            e.printStackTrace();
+        }
+    }
+}
+}
 
-
-
+   
 
 

@@ -3,19 +3,34 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/DBConnection.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/KMVCourses.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/ChapterDAOImpl.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/LecturerDAO.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/AssignStudentsPanel.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/admin/AdminDashboard.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/CourseManagementPanel.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/admin/AdminLogin.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/TableManager.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Chapter.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Lesson.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/TestDB.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Courses.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/AttendanceDAOImpl.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/StudentDAOImpl.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/lecturer/LecturerDashboard.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/LecturerManagementPanel.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Attendance.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/StudentManagementPanel.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/ReportManagementPanel.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/lecturer/LecturerLogin.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/StudentDAO.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Student.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/MainInterface.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/CourseManagementPanel.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/Lecturer.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/AttendanceDAO.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/PassFailSummary.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/MarkAttendancePanel.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/model/StudentPerformance.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/LecturerDAOImpl.java</file>
             <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/CoursesDAO.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/DropAdminTable.java</file>
-            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/ChapterDAO.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/dao/PerformanceReportDAO.java</file>
+            <file>file:/C:/Users/aarti/OneDrive/Documents/NetBeansProjects/KMVCourses/src/kmvcourses/view/admin/GradingPanel.java</file>
         </group>
     </open-files>
 </project-private>

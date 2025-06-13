@@ -20,6 +20,7 @@ import kmvcourses.model.Courses;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import kmvcourses.model.Student;
 
 public class CoursesDAO {
     private static final String DB_URL = "jdbc:derby:C:/Users/aarti/OneDrive/Desktop/CourseDB;create=true";
@@ -103,4 +104,107 @@ public class CoursesDAO {
             return false;
         }
     }
+    
+    // Returns students assigned to a course
+public List<Student> getAssignedStudents(String courseId) {
+    List<Student> students = new ArrayList<>();
+    String sql = "SELECT s.student_id, s.first_name, s.last_name, s.password FROM STUDENTS s " +
+                 "JOIN ENROLLMENTS e ON s.student_id = e.student_id WHERE e.course_id = ?";
+    try (Connection conn = DriverManager.getConnection(DB_URL);
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, courseId);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            students.add(new Student(
+                rs.getString("student_id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("password")
+            ));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return students;
+}
+   // Lecturer-only method: Assign a student to a course
+    public boolean assignStudentToCourse(String studentId, String courseId) {
+        String sql = "INSERT INTO ENROLLMENTS (student_id, course_id) VALUES (?, ?)";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, studentId);
+            stmt.setString(2, courseId);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            // Optionally handle duplicate enrollments or constraint violations here
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    // Returns students NOT assigned to a course
+public List<Student> getUnassignedStudents(String courseId) {
+    List<Student> students = new ArrayList<>();
+    String sql = "SELECT s.student_id, s.first_name, s.last_name, s.password FROM STUDENTS s " +
+                 "WHERE s.student_id NOT IN (SELECT e.student_id FROM ENROLLMENTS e WHERE e.course_id = ?)";
+    try (Connection conn = DriverManager.getConnection(DB_URL);
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, courseId);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            students.add(new Student(
+                rs.getString("student_id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("password")
+            ));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return students;
+}
+
+    // Optional: Get courses assigned to a lecturer
+    public List<Courses> getCoursesByLecturer(String lecturerId) {
+        List<Courses> courses = new ArrayList<>();
+        String sql = "SELECT c.* FROM COURSES c JOIN COURSE_LECTURERS cl ON c.course_id = cl.course_id WHERE cl.lecturer_id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, lecturerId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Courses course = new Courses(
+                        rs.getString("course_id"),
+                        rs.getString("course_name"),
+                        rs.getString("department"),
+                        rs.getInt("credits"),
+                        rs.getInt("level"),
+                        rs.getString("type")
+                    );
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    } 
+    
+    public boolean unassignStudentFromCourse(String studentId, String courseId) {
+    String sql = "DELETE FROM ENROLLMENTS WHERE student_id = ? AND course_id = ?";
+    try (Connection conn = DriverManager.getConnection(DB_URL);
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, studentId);
+        stmt.setString(2, courseId);
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        return false;
+    }
+}
+    
+    
 }
